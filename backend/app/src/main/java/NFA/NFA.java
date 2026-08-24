@@ -23,4 +23,5 @@ public class NFA {
     public State getAcceptState() {
         return accept;
     }
+
 }

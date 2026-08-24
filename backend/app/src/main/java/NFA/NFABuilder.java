@@ -3,11 +3,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import RegEx.Concatenate;
 import RegEx.Literal;
 import RegEx.RegEx;
-import RegEx.Union;
 import RegEx.Star;
+import RegEx.Union;
 
 public class NFABuilder {
 
@@ -55,20 +58,50 @@ public class NFABuilder {
         }
     }
 
-    public void printNFA(NFA nfa) {
-        for (State state : nfa.getStates()) {
-            HashMap<Character, HashSet<State>> transitions = state.getTransitions();
-            for (char entry : transitions.keySet()) {
+    @SuppressWarnings("unchecked")
+    public JSONObject getNFA(NFA nfa) {
 
-                for (State target : transitions.get(entry)) {
-                    System.out.println(
-                        state.getId() + " --" + entry + "--> " + target.getId());
+        JSONObject json = new JSONObject();
+        JSONArray statesJSON = new JSONArray();
+        JSONArray transitionsJSON = new JSONArray();
+
+        for (State state : nfa.getStates()) {
+
+            // add state
+            JSONObject stateJSON = new JSONObject();
+            stateJSON.put("id", state.getId());
+            stateJSON.put("start", state == nfa.getStartState());
+            stateJSON.put("accept", state == nfa.getAcceptState());
+            statesJSON.add(stateJSON);
+
+            // add transitions
+            for (HashMap.Entry<Character, HashSet<State>> entry : state.getTransitions().entrySet()) {
+
+                for (State transitionState : entry.getValue()) {
+
+                    JSONObject transitionJSON = new JSONObject();
+                    transitionJSON.put("start", state.getId());
+                    transitionJSON.put("end", transitionState.getId());
+                    transitionJSON.put("symbol", String.valueOf(entry.getKey()));
+                    transitionsJSON.add(transitionJSON);
+
                 }
+
             }
 
-            for (State target : state.getEpsilonTransitions()) {
-                System.out.println(state.getId() + " --\u03B5--> " + target.getId());
+            for (State transitionState : state.getEpsilonTransitions()) {
+
+                JSONObject transitionJSON = new JSONObject();
+                transitionJSON.put("start", state.getId());
+                transitionJSON.put("end", transitionState.getId());
+                transitionJSON.put("symbol", "ε");
+                transitionsJSON.add(transitionJSON);
+                
             }
         }
+
+        json.put("states", statesJSON);
+        json.put("transitions", transitionsJSON);
+        return json;
     }
 }
