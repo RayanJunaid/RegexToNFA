@@ -35,3 +35,4 @@ dist-ssr
 # Rust / Tauri
 target/
 node_modules/
+gen/schemas

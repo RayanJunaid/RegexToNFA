@@ -19,7 +19,9 @@ public class NFASim {
         currentStates = epsilonClosure(currentStates);
         JSONObject stepJSON = new JSONObject();
         stepJSON.put("symbol", "ε");
-        stepJSON.put("activeStates", stateIds(currentStates));
+        JSONArray activeStates = new JSONArray();
+        activeStates.addAll(stateIds(currentStates));
+        stepJSON.put("activeStates", activeStates);
         stepsJSON.add(stepJSON);
 
         // going through the input string
@@ -27,6 +29,7 @@ public class NFASim {
 
             HashSet<State> newStates = new HashSet<>();
             stepJSON = new JSONObject();
+
             
             // going through each parallel state and storing the transition states
             for (State state : currentStates) { 
@@ -42,14 +45,18 @@ public class NFASim {
 
             // add a step after the input char is processed by the states in currentStates
             stepJSON.put("symbol", String.valueOf(input.charAt(i)));
-            stepJSON.put("activeStates", stateIds(newStates));
+            activeStates = new JSONArray();
+            activeStates.addAll(stateIds(newStates));
+            stepJSON.put("activeStates", activeStates);
             stepsJSON.add(stepJSON);
 
             // add another step for after epsilon closure
             currentStates = epsilonClosure(newStates);
             stepJSON = new JSONObject();
             stepJSON.put("symbol", "ε");
-            stepJSON.put("activeStates", stateIds(currentStates));
+            activeStates = new JSONArray();
+            activeStates.addAll(stateIds(currentStates));
+            stepJSON.put("activeStates", activeStates);
             stepsJSON.add(stepJSON);
 
         }
@@ -87,14 +94,13 @@ public class NFASim {
         return closure;
     }
 
-    private int[] stateIds(HashSet<State> states) {
+    private HashSet<Integer> stateIds(HashSet<State> states) {
 
-        int[] stateArr = new int[states.size()];
-        int i = 0;
+        HashSet<Integer> stateSet = new HashSet<>();
         for (State state : states) {
-            stateArr[i++] = state.getId();
+            stateSet.add(state.getId());
         }
 
-        return stateArr;
+        return stateSet;
     }
 }

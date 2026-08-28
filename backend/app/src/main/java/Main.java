@@ -1,14 +1,15 @@
-import RegEx.RegEx;
-import RegEx.RegExParser;
-import NFA.NFABuilder;
-import NFA.NFA;
-import NFA.NFASim;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import NFA.NFA;
+import NFA.NFABuilder;
+import NFA.NFASim;
+import RegEx.RegEx;
+import RegEx.RegExParser;
 
 public class Main {
     public static void main(String[] args) {
@@ -54,7 +55,7 @@ public class Main {
                             }
                         }
 
-                    } catch (Exception e) {
+                    } catch (ParseException e) {
                         err(e.getMessage());
                     }
 

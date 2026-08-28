@@ -1,11 +1,35 @@
 import type { Edge, EdgeTypes } from "@xyflow/react";
+import SelfConnecting from "./SelfConnectingEdge";
 
-export const initialEdges = [
-  { id: "a->c", source: "a", target: "c", animated: true },
-  { id: "b->d", source: "b", target: "d" },
-  { id: "c->d", source: "c", target: "d", animated: true },
-] satisfies Edge[];
+export function addEdges(
+  transitions: {start: number, end: number, symbol: string}[]
+) {
+
+  const edges: Edge[] = [];
+  for (const transition of transitions) {
+
+    const existingEdge = edges.find((edge) => edge.source == String(transition.start) && edge.target == String(transition.end))
+
+    // combine labels for parallel edges
+    if (existingEdge) {
+      existingEdge.label += `|${transition.symbol}`;
+    } else {
+      const edge: Edge = {
+        id: `${transition.start}-${transition.end}-${transition.symbol}`,
+        source: String(transition.start),
+        target: String(transition.end),
+        animated: true,
+        type: (transition.start == transition.end) ? "selfconnecting" : "smoothstep",
+        label: String(transition.symbol)
+      };
+
+      edges.push(edge);
+    }
+  }
+
+  return edges;
+}
 
 export const edgeTypes = {
-  // Add your custom edge types here!
+  selfconnecting: SelfConnecting
 } satisfies EdgeTypes;
