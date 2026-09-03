@@ -4,6 +4,11 @@ A project that parses regular expressions, converts them into nondeterministic f
 
 The project is a practical exploration of the relationship between regular expressions and NFAs, building on my understanding of automata theory from university.
 
+Regex Construction Demo:
+![Regex to NFA demo](demo/buildRegex.gif)
+
+Input Processing Demo:
+![Regex to NFA demo](demo/simNFA.gif)
 
 ## How it works
 
@@ -34,8 +39,23 @@ The NFA structure is based on [Sipser's book](https://math.mit.edu/~sipser/book.
 
 The NFA is simulated by the NFASim class, which uses non determinism to track each possible path that can be traversed given an input, and checks at the end to see if any path ends at the accepting state.
 
+5. Frontend
+
+The graphical frontend was built using React and React Flow. It provides an interactive visual representation of the NFA generated, with states and transitions displayed and movable. 
+
+It allows user input for a regex to be converted to an NFA and displayed, and an input string to be processed by some constructed NFA.
+
+Tauri provides the desktop application layer using Rust to communicate with the Java backend which runs as a JAR and communicated via input/output streams using JSON.
+
 ## Running the Project
 
-From the root directory, enter:
-Windows: .\backend\gradlew.bat build
-Mac/Linux: ./backend/gradlew build
+**Requirements**
+
+- Java 21 or later (must be available on system PATH)
+- Windows (other operating system installers to be added)
+
+**Running the app**
+
+Run the .msi or .exe installer and once complete, run the app's executable. 
+
+Note: For myself, Windows seemed to block the installation process or block the running of the application, so you may have to disable Smart App Control in Windows Security, but this can be re-enabled later.

@@ -3,7 +3,6 @@ import java.io.InputStreamReader;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import NFA.NFA;
 import NFA.NFABuilder;
@@ -55,7 +54,7 @@ public class Main {
                             }
                         }
 
-                    } catch (ParseException e) {
+                    } catch (Exception e) {
                         err(e.getMessage());
                     }
 
@@ -76,8 +75,8 @@ public class Main {
         RegExParser parser;
         String regex = (String) request.get("regex");
         
-        if (regex == null) {
-            throw new IllegalArgumentException("Missing regex expression");
+        if (regex == null || regex.isBlank()) {
+            throw new IllegalArgumentException("Empty regex");
         }
 
         // build nfa and return json representation
@@ -95,8 +94,8 @@ public class Main {
         String regex = (String) request.get("regex");
         String input = (String) request.get("input");
         
-        if (regex == null) {
-            throw new IllegalArgumentException("Missing regex expression");
+        if (regex == null || regex.isEmpty()) {
+            throw new IllegalArgumentException("Empty regex");
         }
 
         if (input == null) {

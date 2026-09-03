@@ -46,6 +46,11 @@ export default function App() {
       const response = await invoke('backend', { req: JSON.stringify(request) });
       const json = JSON.parse(String(response));
 
+      if (json.error) {
+        alert(String(json.error));
+        return;
+      }
+
       const newNodes = addNodes(json.states, json.transitions);
       setNodes(newNodes);
       const newEdges = addEdges(json.transitions);
@@ -73,6 +78,11 @@ export default function App() {
       const response = await invoke('backend', { req: JSON.stringify(request) });
       const json = JSON.parse(String(response));
 
+        if (json.error) {
+          alert(String(json.error));
+          return;
+        }
+        
       // update active nodes with the relevant properties so the css can highlight them appropriately
       for (const step of json.steps) {
         setNodes(nodes => (nodes.map(node => ({...node, data: {...node.data, active: step.activeStates.includes(Number(node.id)), failed: false}}))));

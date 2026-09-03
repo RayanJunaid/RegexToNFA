@@ -23,9 +23,6 @@ fn start_backend(app: &tauri::AppHandle) -> Result<Backend, String> {
             .join("app.jar")
     };
 
-    println!("JAR PATH: {:?}", jar);
-    println!("JAR EXISTS: {}", jar.exists());
-
     if !jar.exists() {
         return Err(format!("JAR file not found: {:?}", jar));
     }
