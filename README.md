@@ -4,6 +4,8 @@ A project that parses regular expressions, converts them into nondeterministic f
 
 The project is a practical exploration of the relationship between regular expressions and NFAs, building on my understanding of automata theory from university.
 
+[![Latest Release](https://img.shields.io/github/v/release/RayanJunaid/RegexToNFA?label=Download&logo=github)](../../releases/latest)
+
 Regex Construction Demo:
 ![Regex to NFA demo](demo/buildRegex.gif)
 
